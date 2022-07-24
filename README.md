@@ -8,7 +8,15 @@ The shell can be compiled using `gcc -o main main.c`
 The command `./main` can be used to run it after compilation.
 
 # Functionality
-The shell can execute external programs and operations like changing the current directory using `cd` or exiting the shell using `exit` are also implemented.
+The shell can execute external programs and supports program arguments. 
+
+Inbuilt Commands:
+- cd
+- exit
+- help  
+
+The man command can be used for information regarding other programs.
+    
 
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:
