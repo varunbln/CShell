@@ -1,4 +1,15 @@
 A basic shell implementation made in C.
+
+# Installation
+Compatible on Linux distros which have GCC installed.  
+
+The shell can be compiled using `gcc -o main main.c`  
+
+The command `./main` can be used to run it after compilation.
+
+# Functionality
+The shell can execute external programs and operations like changing the current directory using `cd` or exiting the shell using `exit` are also implemented.
+
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:
 1. Initialization: Configuration files are read and executed and the shells behavior is based on this.
