@@ -1,4 +1,4 @@
-A basic shell implementation made in C
+A basic shell implementation made in C.
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:
 1. Initialization: Configuration files are read and executed and the shells behavior is based on this.
