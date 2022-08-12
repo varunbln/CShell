@@ -3,7 +3,7 @@ A basic shell implementation made in C.
 # Installation
 Compatible on Linux distros which have GCC installed.  
 
-The shell can be compiled using `gcc -o main main.c`  
+The shell can be compiled using `gcc -Wall main.c builtins.c -o main`  
 
 The command `./main` can be used to run it after compilation.
 

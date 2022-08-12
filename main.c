@@ -3,15 +3,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "builtins.h"
 
 #define cshell_RL_BUFSIZE 1024
 #define cshell_TOK_BUFSIZE 64
 #define cshell_TOK_DELIM " \t\r\n\a"
-#define BUILTIN_COMMAND_COUNT 3
 
-int cshell_cd(char **args);
-int cshell_help(char **args);
-int cshell_exit(char **args);
 char *cshell_read_line(void);
 char **cshell_split_line(char *line);
 void cshell_loop(void);
@@ -22,49 +19,6 @@ int main(int argc, char **argv)
     // Run command loop.
     cshell_loop();
     return EXIT_SUCCESS;
-}
-
-char *builtin_commands[] = {
-    "cd",
-    "help",
-    "exit"};
-
-int (*builtin_funcs[])(char **) = {
-    &cshell_cd,
-    &cshell_help,
-    &cshell_exit};
-
-int cshell_exit(char **args)
-{
-    return 0;
-}
-
-int cshell_help(char **args)
-{
-    printf("Type program names with any arguments, and press enter.\n");
-    printf("Builtin Commands: \n");
-    for (int i = 0; i < BUILTIN_COMMAND_COUNT; i++)
-    {
-        printf("%s\n", builtin_commands[i]);
-    }
-    printf("The man command can be used for information regarding other programs.\n");
-    return 1;
-}
-
-int cshell_cd(char **args)
-{
-    if (args[1] == NULL)
-    {
-        fprintf(stderr, "Expected argument to 'cd'\n");
-    }
-    else
-    {
-        if (chdir(args[1]) != 0)
-        {
-            perror("CShell");
-        }
-    }
-    return 1;
 }
 
 void cshell_loop(void)
@@ -229,13 +183,10 @@ int cshell_execute(char **args)
     {
         return 1;
     }
-
-    for (int i = 0; i < BUILTIN_COMMAND_COUNT; i++)
+    int res = run_builtins(args);
+    if (res != NO_BUILTIN_FOUND)
     {
-        if (strcmp(args[0], builtin_commands[i]) == 0)
-        {
-            return (*builtin_funcs[i])(args);
-        }
+        return res;
     }
     return cshell_launch(args);
 }
