@@ -3,9 +3,9 @@ A basic shell implementation made in C.
 # Installation
 Compatible on Linux distros which have GCC installed.  
 
-The shell can be compiled using `gcc -Wall main.c builtins.c -o main`  
+The shell can be compiled using make `make cshell`  
 
-The command `./main` can be used to run it after compilation.
+The command `./cshell` can be used to run it after compilation.
 
 # Functionality
 The shell can execute external programs and supports program arguments. 
