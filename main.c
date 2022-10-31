@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "unistd.h"
+#include "limits.h"
 #include "builtins.h"
 
 #define cshell_RL_BUFSIZE 1024
@@ -29,7 +31,15 @@ void cshell_loop(void)
 
     do
     {
-        printf("> ");
+        char cwd[PATH_MAX];
+        if (getcwd(cwd, sizeof(cwd)) != NULL)
+        {
+            printf("%s> ", cwd);
+        }
+        else
+        {
+            printf("> ");
+        }
         line = cshell_read_line();
         args = cshell_split_line(line);
         status = cshell_execute(args);
@@ -87,7 +97,7 @@ char *cshell_read_line(void)
 char *cshell_read_line_simple(void)
 {
     char *line = NULL;
-    ssize_t bufsize = 0; // Make getline realloc buffer
+    size_t bufsize = 0; // Make getline realloc buffer
     if (getline(&line, &bufsize, stdin) == -1)
     {
         if (feof(stdin))
@@ -148,7 +158,7 @@ char **cshell_split_line(char *line)
 // by the parent process to do other things
 int cshell_launch(char **args)
 {
-    pid_t pid, wpid;
+    pid_t pid;
     int status;
 
     pid = fork();
@@ -170,7 +180,7 @@ int cshell_launch(char **args)
     {
         do
         {
-            wpid = waitpid(pid, &status, WUNTRACED);
+            waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 
