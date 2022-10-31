@@ -1,2 +1,2 @@
-cshell: main.c builtins.c
-	gcc -o cshell main.c builtins.c
+cshell: src/main.c src/builtins.c
+	gcc -o cshell src/main.c src/builtins.c
