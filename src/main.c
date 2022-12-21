@@ -6,11 +6,13 @@
 #include <sys/wait.h>
 #include "limits.h"
 #include "builtins.h"
+#include<readline/readline.h>
+#include<readline/history.h>
 
 #define cshell_TOK_BUFSIZE 64
 #define cshell_TOK_DELIM " \t\r\n\a"
 
-char *cshell_read_line_simple(void);
+char *cshell_read_line(void);
 char **cshell_split_line(char *line);
 void cshell_loop(void);
 int cshell_execute(char **args);
@@ -44,13 +46,8 @@ void cshell_loop(void)
             printf("%s", COLOR_BLUE);
             printf("%s", cwd);
             printf("%s", COLOR_RESET);
-            printf("> ");
         }
-        else
-        {
-            printf("> ");
-        }
-        line = cshell_read_line_simple();
+        line = cshell_read_line();
         args = cshell_split_line(line);
         status = cshell_execute(args);
 
@@ -60,22 +57,18 @@ void cshell_loop(void)
 }
 
 // Reads the current line in the input buffer
-char *cshell_read_line_simple(void)
+char *cshell_read_line(void)
 {
-    char *line = NULL;
-    size_t bufsize = 0; // Make getline() reallocate buffer
-    if (getline(&line, &bufsize, stdin) == -1)
-    {
-        if (feof(stdin))
-        { // Check for EOF
+    char *line = readline("> ");
+    if (line == NULL) {
+        if (feof(stdin)) {
             exit(EXIT_SUCCESS);
-        }
-        else
-        {
+        } else {
             perror("Readline error!\n");
             exit(EXIT_FAILURE);
         }
     }
+    add_history(line);
     return line;
 }
 
@@ -132,7 +125,7 @@ int cshell_launch(char **args)
     {
         if (execvp(args[0], args) == -1)
         {
-            perror("Error!\n");
+            perror("Error");
         }
         exit(EXIT_FAILURE);
     } else if (pid < 0)

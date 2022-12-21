@@ -44,7 +44,7 @@ int cshell_cd(char **args)
     {
         if (chdir(args[1]) != 0)
         {
-            perror("CShell");
+            perror("Error");
         }
     }
     return 1;

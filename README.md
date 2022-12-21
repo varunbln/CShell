@@ -4,6 +4,7 @@ A basic shell implementation made in C.
 Requirements:  
 - Linux distribution with GCC installed
 - `gnome-terminal` package
+- `libreadline-dev` package
 
 The shell can be compiled using CMake:
 ```
@@ -23,13 +24,12 @@ $ ./cshell
 - Execute external programs
 - Supports program arguments
 - Inbuilt commands(eg: cd, exit, help)
-- Opens a new gnome terminal window when run
+- Command history is logged and can be viewed using the up and down arrow keys
 - The shell can display colored text
 
 The man command can be used for information regarding other programs.
 
 # Planned Features
-- Command history: Browse and execute previous commands using the up and down arrow keys.
 - Tab completion: Tab completion for commands and arguments.
 - Redirection: Allow redirecting the input and output of commands using the < and > operators.
 - Pipes: Allow piping the output of one command into the input of another using the | operator.
