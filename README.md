@@ -3,20 +3,26 @@ A basic shell implementation made in C.
 # Installation
 Compatible on Linux distros which have GCC installed.  
 
-The shell can be compiled using make `make cshell`  
+The shell can be compiled using CMake:
+```
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
 
-The command `./cshell` can be used to run it after compilation.
+To run the shell:
+```
+$ cd build
+$ ./cshell
+```
 
-# Functionality
-The shell can execute external programs and supports program arguments. 
-
-Inbuilt Commands:
-- cd
-- exit
-- help  
+# Features
+- Execute external programs
+- Supports program arguments
+- Inbuilt commands(eg: cd, exit, help)
 
 The man command can be used for information regarding other programs.
-    
 
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:

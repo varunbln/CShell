@@ -1,1 +1,4 @@
 cshell
+/cmake-build-wsl/
+/cmake-build-debug/
+/.idea/
