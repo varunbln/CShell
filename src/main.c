@@ -1,3 +1,4 @@
+#include "colors.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -6,11 +7,10 @@
 #include "limits.h"
 #include "builtins.h"
 
-#define cshell_RL_BUFSIZE 1024
 #define cshell_TOK_BUFSIZE 64
 #define cshell_TOK_DELIM " \t\r\n\a"
 
-char *cshell_read_line(void);
+char *cshell_read_line_simple(void);
 char **cshell_split_line(char *line);
 void cshell_loop(void);
 int cshell_execute(char **args);
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 {
     // Open a new terminal instance if one isn't already open
     if(argc == 1) {
-        int ret = system("gnome-terminal -e './cshell 0'");
+        int ret = system("gnome-terminal -- ./cshell 0");
         if (ret == -1) {
             perror("system");
             return 1;
@@ -41,13 +41,16 @@ void cshell_loop(void)
         char cwd[PATH_MAX];
         if (getcwd(cwd, sizeof(cwd)) != NULL)
         {
-            printf("%s> ", cwd);
+            printf("%s", COLOR_BLUE);
+            printf("%s", cwd);
+            printf("%s", COLOR_RESET);
+            printf("> ");
         }
         else
         {
             printf("> ");
         }
-        line = cshell_read_line();
+        line = cshell_read_line_simple();
         args = cshell_split_line(line);
         status = cshell_execute(args);
 
@@ -56,55 +59,11 @@ void cshell_loop(void)
     } while (status == 1);
 }
 
-// Reads a line of text from stdin
-char *cshell_read_line(void)
-{
-    int position = 0;
-    int bufsize = cshell_RL_BUFSIZE;
-    char *buffer = malloc(sizeof(char) * bufsize);
-
-    // This is an integer and not a char as EOF is an integer
-    int c;
-    if (!buffer)
-    {
-        fprintf(stderr, "Memory allocation error.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Keep adding to the string until newline or EOF is encountered.
-    while (1)
-    {
-        c = getchar();
-        if (c == EOF || c == '\n')
-        {
-            buffer[position] = '\0';
-            return buffer;
-        }
-        else
-        {
-            buffer[position] = c;
-        }
-        position++;
-
-        // If string size is greater than current buffer size, we realloc buffer
-        if (position >= bufsize)
-        {
-            bufsize += cshell_RL_BUFSIZE;
-            buffer = realloc(buffer, bufsize);
-            if (!buffer)
-            {
-                fprintf(stderr, "Memory allocation error.\n");
-                exit(EXIT_FAILURE);
-            }
-        }
-    }
-}
-
-// read_line function but using the getline() function that does most of the work for us
+// Reads the current line in the input buffer
 char *cshell_read_line_simple(void)
 {
     char *line = NULL;
-    size_t bufsize = 0; // Make getline realloc buffer
+    size_t bufsize = 0; // Make getline() reallocate buffer
     if (getline(&line, &bufsize, stdin) == -1)
     {
         if (feof(stdin))
@@ -176,14 +135,10 @@ int cshell_launch(char **args)
             perror("Error!\n");
         }
         exit(EXIT_FAILURE);
-    }
-    // fork()
-    else if (pid < 0)
+    } else if (pid < 0)
     {
         perror("Error forking!\n");
-    }
-    // fork() executed successfully
-    else
+    } else
     {
         do
         {
@@ -194,6 +149,7 @@ int cshell_launch(char **args)
     return 1;
 }
 
+// Executes a given command by checking if its a builtin, and if not treats it as an external program
 int cshell_execute(char **args)
 {
     if (args[0] == NULL)

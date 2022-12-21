@@ -10,6 +10,7 @@ set(SOURCES
 
 set(HEADERS
         src/builtins.h
+        src/colors.h
         )
 
 add_executable(cshell ${SOURCES} ${HEADERS})
