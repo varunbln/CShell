@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include "unistd.h"
 #include "limits.h"
 #include "builtins.h"
 
@@ -16,10 +15,18 @@ char **cshell_split_line(char *line);
 void cshell_loop(void);
 int cshell_execute(char **args);
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-    // Run command loop.
-    cshell_loop();
+    // Open a new terminal instance if one isn't already open
+    if(argc == 1) {
+        int ret = system("gnome-terminal -e './cshell 0'");
+        if (ret == -1) {
+            perror("system");
+            return 1;
+        }
+    } else {
+        cshell_loop();
+    }
     return EXIT_SUCCESS;
 }
 

@@ -1,7 +1,9 @@
 A basic shell implementation made in C.
 
 # Installation
-Compatible on Linux distros which have GCC installed.  
+Requirements:  
+- Linux distribution with GCC installed
+- `gnome-terminal` package
 
 The shell can be compiled using CMake:
 ```
@@ -21,8 +23,16 @@ $ ./cshell
 - Execute external programs
 - Supports program arguments
 - Inbuilt commands(eg: cd, exit, help)
+- Opens a new gnome terminal window when run
 
 The man command can be used for information regarding other programs.
+
+# Planned Features
+- Command history: Browse and execute previous commands using the up and down arrow keys.
+- Tab completion: Tab completion for commands and arguments.
+- Redirection: Allow redirecting the input and output of commands using the < and > operators.
+- Pipes: Allow piping the output of one command into the input of another using the | operator.
+- Colored text: Allow the shell to display text in color
 
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:
