@@ -142,17 +142,11 @@ int cshell_launch(char **args)
     return 1;
 }
 
-// Executes a given command by checking if its a builtin, and if not treats it as an external program
+// Executes a given command by checking if it's a builtin, and if not treats it as an external program
 int cshell_execute(char **args)
 {
-    if (args[0] == NULL)
-    {
-        return 1;
-    }
+    if (args[0] == NULL) return 1;
     int res = run_builtins(args);
-    if (res != NO_BUILTIN_FOUND)
-    {
-        return res;
-    }
+    if (res != NO_BUILTIN_FOUND) return res;
     return cshell_launch(args);
 }
