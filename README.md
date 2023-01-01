@@ -30,7 +30,6 @@ $ ./cshell
 The man command can be used for information regarding other programs.
 
 # Planned Features
-- Tab completion: Tab completion for commands and arguments.
 - Redirection: Allow redirecting the input and output of commands using the < and > operators.
 - Pipes: Allow piping the output of one command into the input of another using the | operator.
 
