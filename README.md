@@ -32,6 +32,9 @@ The man command can be used for information regarding other programs.
 # Planned Features
 - Redirection: Allow redirecting the input and output of commands using the < and > operators.
 - Pipes: Allow piping the output of one command into the input of another using the | operator.
+- Job control: Allow running multiple processes in the background, and to bring them to the foreground or suspend them as needed.
+- Aliases: Allow registering command aliases.
+- Built-in arithmetic: Allow performing basic arithmetic operations directly in the shell.
 
 # Lifetime of the Shell
 The shell in its lifetime has 3 basic states:
